@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import DatePickerList from './List'
-import DatePickerList2 from './List2'
 
 export default function EditWorker({handleEditSubmit, selectedEditData, handleCancelBtn}) {
   const [sickDates, setSickDates] = useState(selectedEditData.sick_dates)
@@ -19,7 +18,6 @@ export default function EditWorker({handleEditSubmit, selectedEditData, handleCa
 
   const modifiedhandleEditSubmit = (id, e) => {
       e.target.sick_dates = sickDates
-      handleEditSubmit(id, e)
       e.target.off_dates = offDates
       handleEditSubmit(id, e)
   };
@@ -44,7 +42,7 @@ export default function EditWorker({handleEditSubmit, selectedEditData, handleCa
         Phone <input type='text' name='phone_num' defaultValue={selectedEditData.phone_num} /><br/>
         Start Date <input type='date' name='start_date' defaultValue={selectedEditData.start_date} /><br/>
         Sick Dates <DatePickerList itemList={sickDates} addItem={addSickDate} deleteItem={deleteSickDate}/><br/>
-        Off Dates <DatePickerList2 itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
+        Off Dates <DatePickerList itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
         <button type='submit'>EDIT</button>
         <button onClick={handleCancelBtn}>Cancel</button>
     </form>

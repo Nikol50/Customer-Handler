@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import DatePickerList from './List'
-import DatePickerList2 from './List2'
 
 
 export default function AddWorker({handleAddSubmit, handleCancelBtn}) {
@@ -20,9 +19,8 @@ export default function AddWorker({handleAddSubmit, handleCancelBtn}) {
   };
 
   const modifiedHandleAddSubmit = (e) => {
-    e.target.off_dates = offDates
-    handleAddSubmit(e)
     e.target.sick_dates = sickDates
+    e.target.off_dates = offDates
     handleAddSubmit(e)
 
   };
@@ -51,7 +49,7 @@ export default function AddWorker({handleAddSubmit, handleCancelBtn}) {
         Phone <input type='text' name='phone_num' /><br/>
         Start Date <input type='date' name='start_date'/><br/>
         Sick Dates <DatePickerList itemList={sickDates} addItem={addSickDate} deleteItem={deleteSickDate}/><br/>
-        Off Dates <DatePickerList2 itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
+        Off Dates <DatePickerList itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
         <button type='submit'>ADD</button>
         <button onClick={handleCancelBtn}>Cancel</button>
 
