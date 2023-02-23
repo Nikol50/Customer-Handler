@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path, include 
 """from django.conf.urls import url"""
 from rest_framework import routers
-from workers.views import WorkerView
+from workers.views import WorkerList, WorkerDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('workers/',  WorkerView.as_view() ,name='somthing'),
+    path('',  include('workers.urls') , name='somthing'),
 ]

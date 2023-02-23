@@ -1,0 +1,50 @@
+import datetime
+from django.core import exceptions
+from django.db import models
+
+
+# Create your models here.
+class ListField(models.JSONField):
+    def validate(self, value, model_instance):
+        super().validate(value, model_instance)
+        if not isinstance(value, list): 
+            raise exceptions.ValidationError(
+                self.error_messages["invalid"],
+                code="invalid",
+                params={"value": value},
+            )
+
+
+class ListOfDatesField(ListField):
+    @staticmethod
+    def check_date_format(date: str) -> bool:
+        # should be YYYY-MM-DD
+        try:
+            datetime.date.fromisoformat(date)
+            return True
+        except ValueError:
+            return False
+
+    def validate(self, value, model_instance):
+        super().validate(value, model_instance)
+        for item in value:
+            if not self.check_date_format(item):
+                raise exceptions.ValidationError(
+                    self.error_messages["invalid"],
+                    code="invalid",
+                    params={"value": value},
+                )           
+
+
+class Worker(models.Model):
+    id = models.CharField(max_length=9, primary_key=True, blank=False)
+    first_name = models.CharField(max_length=120, null=False, blank=False)
+    last_name = models.CharField(max_length=120, null=False, blank=False)
+    address = models.CharField(max_length=120)
+    phone_num = models.CharField(max_length=20)
+    start_date = models.DateTimeField(null=True)
+    sick_dates = ListOfDatesField(null=False, blank=False, default=list)
+    off_dates = ListOfDatesField(null=False, blank=False, default=list)
+
+    def _str_(self):
+        return self.id

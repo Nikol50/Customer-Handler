@@ -1,0 +1,21 @@
+import datetime
+from django.core import exceptions
+from django.db import models
+from django_mysql.models import ListCharField
+from django.db.models import CharField
+
+class Worker(models.Model):
+    id = models.CharField(max_length=9, primary_key=True, blank=False)
+    first_name = models.CharField(max_length=120, null=False, blank=False)
+    last_name = models.CharField(max_length=120, null=False, blank=False)
+    address = models.CharField(max_length=120)
+    phone_num = models.CharField(max_length=20)
+    start_date = models.DateTimeField(null=True)
+    #sick_dates = ListCharField(
+    #    base_field=CharField(max_length=10),
+    #    size=6,
+    #    max_length=(6 * 11),  # 6 * 10 character nominals, plus commas
+    #)
+
+    def _str_(self):
+        return self.id
