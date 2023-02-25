@@ -13,25 +13,22 @@ const [selectedEditData, setSelectedEditData] = useState()
 useEffect(() => {
     let mount = true
     getworker()
-    .then(res => {console.log("res from api", res)
+    .then(res => {
         setworkers(res)
         return() => mount = false
     })
 }, [])
 
 const handleAddSubmit = (e) => {
-    //let mount = true
-    console.log("Add submit: ", e.target)
-    console.log("Add submit1: ", e.target.sick_dates)
-    console.log("Add submit1: ", e.target.off_dates)
+    e.preventDefault()
     addworker(e.target)
     .then(res => {
-        console.log("Successfully added: ", res)
+        console.log("Successfully added: " + res)
     })
 }
 const handleEditBtn = (worker) => {
+    console.log("The selected worker is: " + worker)
     setSelectedEditData(worker)
-    console.log("worker selected is", worker)
     setShowEditWorkerForm(true)
     setShowAddWorkerForm(false)
 }
@@ -40,23 +37,28 @@ const handleAddBtn = () => {
     setShowAddWorkerForm(true)
 }
 const handleEditSubmit = (id, e) => {
-    console.log("Editing: ", e.target)
+    console.log("Editing: " + e.target)
+    e.preventDefault()
     editworker(id, e.target)
     .then(res => {
-        console.log("Successfully Edited: ", res)
+        console.log("Successfully Edited: " + res)
     })
 }
 
 function handleCancelBtn() {
     setShowAddWorkerForm(false)
+    setShowEditWorkerForm(false)
 }
 
 const handleDeleteBtn = (id) => {
-    deleteworker(id)
-    .then(res => {
-        setworkers(workers.filter(w=> w.id !== id))
-    })
+    if (window.confirm("Are you sure you want to delete the worker " + id +" ?")) {
+        console.log("Deleting: " + id)
+        deleteworker(id).then(res => {
+            console.log("Successfully Deleted: " + id)
+        })
+    }
 }
+
 return (
     <>
     <h3>WORKERS LIST</h3>
@@ -85,7 +87,7 @@ return (
                 <td>{worker.start_date}</td>
                 <td>{worker.sick_dates.join(" ; ")}</td>
                 <td>{worker.off_dates.join(" ; ")}</td>
-                <td><button onClick={()=>handleEditBtn(worker)}>Edit</button> <button onClick={()=>handleDeleteBtn(worker.id)}>Delete</button></td>
+                <td><button type='button' onClick={()=>handleEditBtn(worker)}>Edit</button> <button type='button'onClick={()=>handleDeleteBtn(worker.id)}>Delete</button></td>
             </tr>
             })}    
         </tbody>

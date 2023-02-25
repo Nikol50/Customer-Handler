@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import DatePickerList from './List'
+import AddDateToList from './AddDateToList'
 
 
 export default function AddWorker({handleAddSubmit, handleCancelBtn}) {
@@ -48,10 +48,10 @@ export default function AddWorker({handleAddSubmit, handleCancelBtn}) {
         Address  <input type='text' name='address' /><br/>
         Phone <input type='text' name='phone_num' /><br/>
         Start Date <input type='date' name='start_date'/><br/>
-        Sick Dates <DatePickerList itemList={sickDates} addItem={addSickDate} deleteItem={deleteSickDate}/><br/>
-        Off Dates <DatePickerList itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
+        Sick Dates <AddDateToList itemList={sickDates} addItem={addSickDate} deleteItem={deleteSickDate}/><br/>
+        Off Dates <AddDateToList itemList={offDates} addItem={addOffDate} deleteItem={deleteOffDate}/><br/>
         <button type='submit'>ADD</button>
-        <button onClick={handleCancelBtn}>Cancel</button>
+        <button type='button' onClick={handleCancelBtn}>Cancel</button>
 
     </form>
     </>

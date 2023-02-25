@@ -21,5 +21,5 @@ from workers.views import WorkerList, WorkerDetail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',  include('workers.urls') , name='somthing'),
+    path('',  include('workers.urls'), name='workers_app'),
 ]

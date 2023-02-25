@@ -1,9 +1,12 @@
-from .models import Worker, SickDate, OffDate
-from .serializer import WorkerSerializer, SickDateSerializer, OffDateSerializer
+from typing import List, Tuple
+
+from django.db import transaction
+from django.db.models.query import prefetch_related_objects
 from rest_framework import generics, status
 from rest_framework.response import Response
-from django.db import transaction
-from typing import List, Tuple
+
+from .models import Worker, SickDate, OffDate
+from .serializer import WorkerSerializer, SickDateSerializer, OffDateSerializer
 
 
 def get_or_create_dates(instance, list_of_dates) -> List[Tuple[str, bool]]:
@@ -38,7 +41,7 @@ class WorkerList(generics.ListCreateAPIView):
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-            
+
 
 class WorkerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Worker.objects.all()
@@ -47,8 +50,10 @@ class WorkerDetail(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        old_sick_dates_query = list(instance.sick_dates.all())  # Casting to list prevent change after updating the instance
-        old_off_dates_query = list(instance.off_dates.all())  # Casting to list prevent change after updating the instance
+        old_sick_dates_query = list(
+            instance.sick_dates.all())  # Casting to list prevent change after updating the instance
+        old_off_dates_query = list(
+            instance.off_dates.all())  # Casting to list prevent change after updating the instance
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
 
         with transaction.atomic():
@@ -71,8 +76,10 @@ class WorkerDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        old_sick_dates_query = list(instance.sick_dates.all())  # Casting to list prevent change after deleting the instance
-        old_off_dates_query = list(instance.off_dates.all())  # Casting to list prevent change after updating the instance
+        old_sick_dates_query = list(
+            instance.sick_dates.all())  # Casting to list prevent change after deleting the instance
+        old_off_dates_query = list(
+            instance.off_dates.all())  # Casting to list prevent change after updating the instance
 
         with transaction.atomic():
             self.perform_destroy(instance)
@@ -80,7 +87,6 @@ class WorkerDetail(generics.RetrieveUpdateDestroyAPIView):
             delete_unused_dates(OffDate, old_off_dates_query)
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class WorkerSickDateList(generics.ListAPIView):

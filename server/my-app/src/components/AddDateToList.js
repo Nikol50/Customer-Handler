@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function DatePickerList({itemList, addItem, deleteItem}) {
+export default function AddDateToList({itemList, addItem, deleteItem}) {
     const [chosenDate, setchosenDate] = useState('');
     const dateList = itemList.map((item) => {
         return <li>{item} <button type='button' value={item} onClick={deleteItem}>Delete</button> </li>

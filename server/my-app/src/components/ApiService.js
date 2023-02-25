@@ -6,13 +6,23 @@ export  function getworker() {
     return res.data
   }).catch(error => {
     // Handle error
-    alert("something went wrong...." + error.response.status);
-})}
+    if (error.response) {
+        // Request made and server responded
+        console.log("Something went wrong: " + JSON.stringify(error.toJSON(), null, 2))
+        alert(error.toJSON().code.toString() + " " + error.response.status + ": " + JSON.stringify(error.response.data));
+
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log("ERROR OCCURED: " + error.request)
+        alert("Something went wrong: " + error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        alert("Something went wrong...");
+      }
+  })
+}
 
 export  function addworker(worker) {
-console.log("start_date", worker.start_date.value || null)
-console.log("sick_dates", worker.sick_dates)
-console.log("off_dates", worker.off_dates)
     return axios.post('http://127.0.0.1:8000/workers/',
     {
         id: worker.id.value,
@@ -26,14 +36,30 @@ console.log("off_dates", worker.off_dates)
     })
     .then(res => {
         return res.data
+    }).then(res => {
+        return res.data
     }).catch(error => {
-        // Handle error
-        if (error.response.status==400);
-            alert("something went wrong...." + error.response.status);
-    })}
+        if (error.response) {
+            // Request made and server responded
+            console.log("Something went wrong: " + JSON.stringify(error.toJSON(), null, 2))
+            alert(error.toJSON().code.toString() + " " + error.response.status + ": " + JSON.stringify(error.response.data));
+
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log("ERROR OCCURED: " + error.request)
+            alert("Something went wrong: " + error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            alert("Something went wrong...");
+          }
+    })
+    .finally(() => {
+        window.location.reload(false);
+    });
+}
 
 export  function editworker(id, worker) {
-    return axios.patch('http://127.0.0.1:8000/workers/'+id+'/',
+    return axios.patch('http://127.0.0.1:8000/workers/' + id + '/',
     {
         first_name: worker.first_name.value,
         last_name: worker.last_name.value,
@@ -46,9 +72,23 @@ export  function editworker(id, worker) {
     .then(res => {
         return res.data
     }).catch(error => {
-        // Handle error
-        alert("something went wrong...." + error.response.status);
-    })}
+        if (error.response) {
+            // Request made and server responded
+            console.log("Something went wrong: " + JSON.stringify(error.toJSON(), null, 2))
+            alert(error.toJSON().code.toString() + " " + error.response.status + ": " + JSON.stringify(error.response.data));
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log("ERROR OCCURED: " + error.request)
+            alert("Something went wrong: " + error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            alert("Something went wrong...");
+          }
+    })
+    .finally(() => {
+        window.location.reload(false);
+    });    
+}
 
 export  function deleteworker(id) {
     return axios.delete('http://127.0.0.1:8000/workers/'+id+'/')
@@ -56,5 +96,20 @@ export  function deleteworker(id) {
         return res.data
     }).catch(error => {
         // Handle error
-        alert("something went wrong...." + error.response.status);
-    })}
+        if (error.response) {
+            // Request made and server responded
+            console.log("Something went wrong: " + JSON.stringify(error.toJSON(), null, 2))
+            alert(error.toJSON().code.toString() + " " + error.response.status + ": " + JSON.stringify(error.response.data));
+
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.log("ERROR OCCURED: " + error.request)
+            alert("Something went wrong: " + error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            alert("Something went wrong...");
+        }
+    }).finally(() => {
+        window.location.reload(false);
+    });
+}
