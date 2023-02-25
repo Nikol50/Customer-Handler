@@ -1,4 +1,5 @@
 .*
 server/.*
-server/server/__pycache__/*
+server/django-backend/__pycache__/
+server/workers-ui/node_modules/
 __pycache__/
